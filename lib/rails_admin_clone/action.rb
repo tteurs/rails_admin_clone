@@ -18,8 +18,10 @@ module RailsAdmin
         register_instance_option :controller do
           Proc.new do
             model_cloner  = RailsAdminClone::ModelCloner.new(@object)
-            custom_method = model_config.clone_config.custom_method
-
+            #custom_method = model_config.clone_config.custom_method
+            ## TODO: quick fix
+            custom_method = model_config.try_chain(:clone_config, :custom_method)
+            
             if custom_method.present?
               @object = model_cloner.method_clone(custom_method)
             else
